@@ -1,0 +1,12 @@
+--[[
+Made by: Space#0234
+Discord Server: https://triphub.ga/invite/
+Support: Mobile/Pc
+]]--
+ 
+getgenv().Prediction = 0.11
+getgenv().AimPart = "Head"  
+getgenv().Key = "q" 
+getgenv().AutoPrediction = false 
+ 
+loadstring(game:HttpGet('https://raw.githubusercontent.com/elxocasXD/Trip-Hub/main/Scripts/Cam%20Lock.lua'))()
