@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tài Xỉu Predictor - Test App</title>
+<style>
+  body {
+    background-color: #0a0a0a;
+    color: #00ffcc;
+    font-family: 'Consolas', monospace;
+    text-align: center;
+    padding: 40px;
+  }
+  button {
+    background-color: #00ffcc;
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 25px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  button:hover {
+    background-color: #00ffaa;
+  }
+  #result {
+    font-size: 40px;
+    margin-top: 30px;
+  }
+  #stats {
+    margin-top: 30px;
+    font-size: 18px;
+    color: #b0ffea;
+  }
+  #log {
+    margin-top: 30px;
+    max-height: 300px;
+    overflow-y: auto;
+    border-top: 1px solid #00ffcc;
+    padding-top: 15px;
+  }
+  .tai { color: #00ffcc; font-weight: bold; }
+  .xiu { color: #ff3366; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>Tài Xỉu Probability Tester</h1>
+<p>Educational simulation — not connected to any gambling platform.</p>
+
+<button onclick="generateResult()">Generate Result</button>
+
+<div id="result">Press the button to start</div>
+<div id="stats"></div>
+<div id="log"></div>
+
+<script>
+let history = [];
+let taiCount = 0, xiuCount = 0;
+
+function generateResult() {
+  // adjustable probability (e.g., 50% each)
+  const probTai = 0.5;
+  const roll = Math.random();
+  const result = roll < probTai ? "Tài" : "Xỉu";
+  
+  // record history
+  history.unshift(result);
+  if (history.length > 20) history.pop();
+
+  if (result === "Tài") taiCount++; else xiuCount++;
+
+  const total = taiCount + xiuCount;
+  const pctTai = ((taiCount / total) * 100).toFixed(1);
+  const pctXiu = ((xiuCount / total) * 100).toFixed(1);
+
+  // streak detection
+  let streak = 1;
+  for (let i = 1; i < history.length; i++) {
+    if (history[i] === history[0]) streak++;
+    else break;
+  }
+
+  // display
+  document.getElementById("result").innerHTML =
+    result === "Tài" ? `<span class='tai'>${result}</span>` : `<span class='xiu'>${result}</span>`;
+
+  document.getElementById("stats").innerHTML =
+    `Total: ${total} | Tài: ${taiCount} (${pctTai}%) | Xỉu: ${xiuCount} (${pctXiu}%)<br>` +
+    `Current streak: <b>${streak} × ${history[0]}</b>`;
+
+  const logHTML = history.map((r, i) => 
+    `<span class='${r === "Tài" ? "tai" : "xiu"}'>${r}</span>${i < history.length-1 ? " • " : ""}`
+  ).join("");
+  document.getElementById("log").innerHTML = `<b>Last 20 results:</b><br>${logHTML}`;
+}
+</script>
+
+</body>
+</html>
